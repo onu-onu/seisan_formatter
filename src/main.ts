@@ -3,6 +3,9 @@ window.onload = () => {
         formating();
         copyDivToClipboard();
     });
+    document.querySelector('#copyBtn')?.addEventListener('click', () => {
+        copyDivToClipboard();
+    });
 };
 
 function formating() {
