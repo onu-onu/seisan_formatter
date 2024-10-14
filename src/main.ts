@@ -11,6 +11,7 @@ window.onload = () => {
 function formating() {
     const textArea = <HTMLTextAreaElement>document.querySelector('#csvText');
     const outdiv = <HTMLElement>document.querySelector('#output');
+    outdiv.innerHTML = '';
 
     const text = textArea.value;
     const lines: string[] = text.split("\n");
