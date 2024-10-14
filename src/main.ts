@@ -1,43 +1,35 @@
 window.onload = () => {
-    document.getElementById('csvFileInput')?.addEventListener('change', handleFileUpload);
-    document.getElementById('copyButton')?.addEventListener('click', copyDivToClipboard);
+    document.getElementById('csvText')?.addEventListener('input', () => {
+        formating();
+        copyDivToClipboard();
+    });
 };
 
-
-function handleFileUpload(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (!input.files?.length) return;
-
-    const file = input.files[0];
-    const reader = new FileReader();
-
+function formating() {
+    const textArea = <HTMLTextAreaElement>document.querySelector('#csvText');
     const outdiv = <HTMLElement>document.querySelector('#output');
 
-    reader.onload = function(e) {
-        const text: string = String(e.target?.result);
-        const lines: string[] = text.replace('\r', '').split("\n");
+    const text = textArea.value;
+    const lines: string[] = text.split("\n");
 
-        lines.slice(0, 5).forEach(line => {
-            let tokens = line.split(',');
-            let label = tokens[0];
-            let value = tokens[1];
-            console.log(`${label} ${value}`);
-            outdiv.innerHTML += `${label} ${value}<br />`;
-        });
+    lines.slice(0, 5).forEach(line => {
+        let tokens = line.split('\t');
+        let label = tokens[0];
+        let value = tokens[1];
+        console.log(`${label} ${value}`);
+        outdiv.innerHTML += `${label} ${value}<br />`;
+    });
 
-        lines.slice(6, lines.length - 1).forEach(line => {
-            let tokens = line.split(',');
-            let use = formatString(tokens[0], '　');
-            let date = tokens[1].slice(5);
-            let price = tokens[2];
-            let who = tokens[3];
-            let outputStr = `${use}　${date}　${who}　${price}<br />`;
-            console.log(outputStr);
-            outdiv.innerHTML += outputStr;
-        });
-    };
-
-    reader.readAsText(file);
+    lines.slice(6, lines.length - 1).forEach(line => {
+        let tokens = line.split('\t');
+        let use = formatString(tokens[0], '　');
+        let date = tokens[1].slice(5);
+        let price = tokens[2];
+        let who = tokens[3];
+        let outputStr = `${use}　${date}　${who}　${price}<br />`;
+        console.log(outputStr);
+        outdiv.innerHTML += outputStr;
+    });
 }
 
 function formatString(input: string, fullWidthSpace: string): string {
